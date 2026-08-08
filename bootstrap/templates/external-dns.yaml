@@ -8,34 +8,20 @@ metadata:
 spec:
   project: infra
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
     chart: external-dns
-    targetRevision: 8.3.7
+    targetRevision: 1.21.1
     helm:
       values: |-
         sources:
           - service
           - ingress
-        aws:
-          region: "{{ .Values.awsRegion }}"
         policy: sync
         txtOwnerId: "{{ .Values.clusterName }}"
         serviceAccount:
           annotations:
             eks.amazonaws.com/role-arn: arn:aws:iam::{{ .Values.accountId }}:role/eks-{{ .Values.clusterName }}-external-dns
-        extraEnvVars:
-          - name: HTTP_PROXY
-            value: {{ .Values.proxy }}
-          - name: HTTPS_PROXY
-            value: {{ .Values.proxy }}
-          - name: NO_PROXY
-            value: {{ .Values.no_proxy }}
-          - name: http_proxy
-            value: {{ .Values.proxy }}
-          - name: https_proxy
-            value: {{ .Values.proxy }}
-          - name: no_proxy
-            value: {{ .Values.no_proxy }}
+     
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
