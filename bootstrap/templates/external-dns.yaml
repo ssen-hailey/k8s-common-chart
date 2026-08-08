@@ -13,6 +13,8 @@ spec:
     targetRevision: 1.21.1
     helm:
       values: |-
+        provider :
+          name: aws
         sources:
           - service
           - ingress
@@ -21,7 +23,10 @@ spec:
         serviceAccount:
           annotations:
             eks.amazonaws.com/role-arn: arn:aws:iam::{{ .Values.accountId }}:role/eks-{{ .Values.clusterName }}-external-dns
-     
+        env : 
+          - name: AWS_REGION
+            value: "{{ .Values.awsRegion }}"
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
